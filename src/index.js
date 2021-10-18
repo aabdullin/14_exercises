@@ -1,17 +1,32 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
+import React, { useState } from "react";
+import ReactDOM from "react-dom";
+
+function Room({ onClick }) {
+  const [setClicked] = useState("Room is lit");
+  const handleClick = () => {
+    onClick();
+    // Ok, no more clicking.
+    setClicked("The room is dark");
+  };
+  return (
+    <div>
+      <h1> {setClicked} </h1>
+      <button onClick={handleClick}>Lightswitch</button>;
+    </div>
+  );
+}
 
 ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
-  document.getElementById('root')
+  <Room onClick={() => alert("hi")} />,
+  document.querySelector("#root")
 );
 
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();
+// function App () {
+//   const [count] = useState(0)
+//   return (
+//       <div>
+//           <h1>{count}</h1>
+//           <button>Change!</button>
+//       </div>
+//   )
+// }
