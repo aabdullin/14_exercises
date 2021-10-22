@@ -1,32 +1,101 @@
-import React, { useState } from "react";
+import React, { useReducer, useRef } from "react";
 import ReactDOM from "react-dom";
 
-function Room({ onClick }) {
-  const [setClicked] = useState("Room is lit");
-  const handleClick = () => {
-    onClick();
-    // Ok, no more clicking.
-    setClicked("The room is dark");
-  };
+// exercise 2.
+const reducer = (state, action) => {
+  switch (action.type) {
+    case "off":
+      return (state = "off");
+    case "low":
+      return (state = "low");
+    case "medium":
+      return (state = "medium");
+    case "high":
+      return (state = "high");
+  }
+};
+
+function Room() {
+  const [items, dispatch] = useReducer(reducer, "");
+
   return (
-    <div>
-      <h1> {setClicked} </h1>
-      <button onClick={handleClick}>Lightswitch</button>;
+    <div className={dispatch.action}>
+      <h1> ROOM </h1>
+      <button onClick={() => dispatch("off")}>off</button>
+      <button onClick={() => dispatch("low")}>low</button>
+      <button onClick={() => dispatch("medium")}>medium</button>
+      <button onClick={() => dispatch("high")}>high</button>
+      <button onClick={() => dispatch("off")}>Turn off</button>
     </div>
   );
 }
 
-ReactDOM.render(
-  <Room onClick={() => alert("hi")} />,
-  document.querySelector("#root")
-);
+// exercise 1
+// const reducer = (state, action) => {
+//   switch (action.type) {
+//     case "add":
+//       return [
+//         ...state,
+//         {
+//           id: state.length,
+//           name: action.name,
+//         },
+//       ];
+//     case "remove":
+//       return state.filter((_, index) => index !== action.index);
+//     case "clear":
+//       console.log(state);
+//       return (state = []);
+//     default:
+//       return state;
+//   }
+// };
 
-// function App () {
-//   const [count] = useState(0)
+// function ShoppingList() {
+//   const inputRef = useRef();
+//   const [items, dispatch] = useReducer(reducer, []);
+//   function handleSubmit(e) {
+//     e.preventDefault();
+//     dispatch({
+//       type: "add",
+//       name: inputRef.current.value,
+//     });
+//     inputRef.current.value = "";
+//   }
 //   return (
-//       <div>
-//           <h1>{count}</h1>
-//           <button>Change!</button>
-//       </div>
-//   )
+//     <>
+//       <form onSubmit={handleSubmit}>
+//         {" "}
+//         <input ref={inputRef} />
+//       </form>{" "}
+//       <ul>
+//         {items.map((item, index) => (
+//           <li key={item.id}>
+//             {item.name}
+//             <button onClick={() => dispatch({ type: "remove", index })}>
+//               X
+//             </button>
+//           </li>
+//         ))}
+//       </ul>{" "}
+//       <button onClick={() => dispatch({ type: "clear" })}>Clear</button>
+//     </>
+//   );
 // }
+
+// book exercise
+// function Counter() {
+//   // First render will create the state, and it will
+//   // persist through future renders
+//   const [sum, dispatch] = useReducer((sum, dispatch) => {
+//     return sum + dispatch;
+//   }, 0);
+//   return (
+//     <>
+//       {sum}
+//       <button onClick={() => dispatch(1)}> Add 1</button>
+//     </>
+//   );
+// }
+
+ReactDOM.render(<Room />, document.querySelector("#root"));

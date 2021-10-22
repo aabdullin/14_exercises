@@ -1,0 +1,15 @@
+.off {
+  background-color: white;
+}
+
+.low {
+  background-color: yellow;
+}
+
+.medium {
+  background-color: orange;
+}
+
+.high {
+  background-color: red;
+}
