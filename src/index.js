@@ -1,34 +1,70 @@
 import React, { useReducer, useRef } from "react";
 import ReactDOM from "react-dom";
 
-// exercise 2.
-const reducer = (state, action) => {
-  switch (action.type) {
-    case "off":
-      return (state = "off");
-    case "low":
-      return (state = "low");
-    case "medium":
-      return (state = "medium");
-    case "high":
-      return (state = "high");
-  }
-};
-
 function Room() {
-  const [items, dispatch] = useReducer(reducer, "");
+  const levels = ["off", "low", "medium", "high"];
+
+  const initialState = { level: levels[0] };
+
+  function lightReducer(state, action) {
+    switch (action.type) {
+      case "increment":
+        const levelIndex = levels.findIndex((l) => {
+          return l === state.level;
+        });
+        console.log(levelIndex);
+        const nextLevel = levelIndex + 1 < levels.length ? levelIndex + 1 : 0;
+        return {
+          level: levels[nextLevel],
+        };
+      case "off":
+        return {
+          level: levels[0],
+        };
+      default:
+        throw new Error();
+    }
+  }
+
+  const [state, dispatch] = useReducer(lightReducer, initialState);
 
   return (
-    <div className={dispatch.action}>
-      <h1> ROOM </h1>
-      <button onClick={() => dispatch("off")}>off</button>
-      <button onClick={() => dispatch("low")}>low</button>
-      <button onClick={() => dispatch("medium")}>medium</button>
-      <button onClick={() => dispatch("high")}>high</button>
-      <button onClick={() => dispatch("off")}>Turn off</button>
+    <div>
+      <h1> {`Light is : ${state.level}`} </h1>
+      <button onClick={() => dispatch({ type: "increment" })}>Increment</button>
+      <button onClick={() => dispatch({ type: "off" })}>Off</button>
     </div>
   );
 }
+
+// exercise 2.
+// const reducer = (state, action) => {
+//   switch (action.type) {
+//     case "off":
+//       return (state = "off");
+//     case "low":
+//       return (state = "low");
+//     case "medium":
+//       return (state = "medium");
+//     case "high":
+//       return (state = "high");
+//   }
+// };
+
+// function Room() {
+//   const [items, dispatch] = useReducer(reducer, "");
+
+//   return (
+//     <div className={dispatch.action}>
+//       <h1> ROOM </h1>
+//       <button onClick={() => dispatch("off")}>off</button>
+//       <button onClick={() => dispatch("low")}>low</button>
+//       <button onClick={() => dispatch("medium")}>medium</button>
+//       <button onClick={() => dispatch("high")}>high</button>
+//       <button onClick={() => dispatch("off")}>Turn off</button>
+//     </div>
+//   );
+// }
 
 // exercise 1
 // const reducer = (state, action) => {
