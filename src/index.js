@@ -26,6 +26,29 @@ function Room() {
     }
   }
 
+  const secretKey = "000000";
+  function keyPadReducer(state, action) {
+    switch (action.type) {
+      case "keyEntered":
+        if (!secretKey.startsWith(state.keys + action.key)) {
+          return {
+            keys: "",
+          };
+        }
+
+        return {
+          keys: state.keys + action.key,
+        };
+      case "reset":
+        return {
+          keys: "",
+        };
+      default:
+        throw new Error();
+    }
+  }
+  const [keyState, keyDispatch] = useReducer(keyPadReducer, { keys: "" });
+
   const [state, dispatch] = useReducer(lightReducer, initialState);
 
   return (
@@ -33,6 +56,15 @@ function Room() {
       <h1> {`Light is : ${state.level}`} </h1>
       <button onClick={() => dispatch({ type: "increment" })}>Increment</button>
       <button onClick={() => dispatch({ type: "off" })}>Off</button>
+      <h1>{`Keys: ${keyState.keys}`}</h1>
+      {Array.from(Array(10).keys()).map((i) => (
+        <button
+          onClick={() => keyDispatch({ type: "keyEntered", key: `${i}` })}
+        >
+          {i}
+        </button>
+      ))}
+      <button onClick={() => keyDispatch({ type: "reset" })}>Reset</button>
     </div>
   );
 }
